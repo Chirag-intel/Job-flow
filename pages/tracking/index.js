@@ -41,7 +41,13 @@ export default function Tracking() {
     return (
         <Layout>
             <Head><title>Tracking & Analytics — JobFlow</title></Head>
-            <div className="space-y-5 animate-fade-in">
+
+            {/* Floating Decorative Brain Image */}
+            <div className="absolute top-[10%] right-[0%] w-[350px] xl:w-[500px] opacity-[0.06] xl:opacity-[0.1] mix-blend-screen animate-float pointer-events-none z-0" style={{ animationDuration: '15s' }}>
+                <img src="/brain.png" alt="AI Analytics Core" className="w-full h-full object-contain filter drop-shadow-[0_0_50px_rgba(16,185,129,0.4)]" />
+            </div>
+
+            <div className="space-y-5 animate-fade-in relative z-10">
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>
                         <h1 className="text-2xl font-black" style={{ color: 'var(--text-primary)' }}>Tracking & Analytics</h1>

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { Search, Users, MessageSquare, BarChart2, Zap, ArrowRight, Check, Star, ChevronDown, Menu, X, Phone, Shield, Briefcase, Cpu, Clock } from 'lucide-react';
+import { Search, Users, MessageSquare, BarChart2, Zap, ArrowRight, Check, Star, ChevronDown, Menu, X, Phone, Shield, Briefcase, Cpu, Clock, Globe, Target, Linkedin, PlayCircle, Eye, Loader2, CreditCard } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 
 function Counter({ end, suffix = '', duration = 1800 }) {
@@ -49,38 +49,116 @@ function OTPForm({ onSuccess }) {
   };
 
   return (
-    <div className="w-full max-w-sm">
-      <div className="p-7 rounded-2xl" style={{ background: 'rgba(13,21,38,0.95)', border: '1px solid rgba(59,130,246,0.25)', boxShadow: '0 24px 64px rgba(0,0,0,0.5),0 0 0 1px rgba(59,130,246,0.08)' }}>
-        <div className="flex items-center gap-2.5 mb-6">
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#3b82f6,#2563eb)' }}>
-            {step === 'phone' ? <Phone size={16} className="text-white" /> : <Shield size={16} className="text-white" />}
+    <div className="w-full max-w-sm relative group perspective-1000">
+      <div className="absolute inset-0 bg-blue-500/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 w-[120%] h-[120%] -left-[10%] -top-[10%] rounded-full mix-blend-screen pointer-events-none" />
+      <div className="relative p-8 rounded-[2rem] transform-gpu transition-all duration-500 hover:rotate-y-[-2deg] hover:rotate-x-[2deg] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)]"
+        style={{ background: 'linear-gradient(145deg, rgba(13,21,38,0.95), rgba(7,13,26,0.95))', border: '1px solid rgba(59,130,246,0.3)' }}>
+        <div className="absolute inset-0 bg-noise opacity-[0.03] rounded-[2rem] pointer-events-none" />
+        <div className="flex items-center gap-3 mb-8 relative">
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.5)]" style={{ background: 'linear-gradient(135deg,#3b82f6,#2563eb)' }}>
+            {step === 'phone' ? <Phone size={20} className="text-white drop-shadow-md" /> : <Shield size={20} className="text-white drop-shadow-md" />}
           </div>
           <div>
-            <h3 className="font-bold text-sm" style={{ color: 'var(--text-primary)' }}>{step === 'phone' ? 'Get Started Free' : 'Verify OTP'}</h3>
-            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{step === 'phone' ? 'No credit card required' : `Sent to +91 ${phone}`}</p>
+            <h3 className="font-black text-lg" style={{ color: 'var(--text-primary)' }}>{step === 'phone' ? 'Outsource Your Hunt' : 'Verify Mobile'}</h3>
+            <p className="text-xs font-semibold uppercase tracking-wider mt-1" style={{ color: 'var(--primary)' }}>{step === 'phone' ? 'Start Free Trial' : `Code sent to +91 ${phone}`}</p>
           </div>
         </div>
+
         {step === 'phone' ? (
-          <form onSubmit={sendOTP} className="space-y-3">
-            <div className="flex items-center input-dark" style={{ padding: 0 }}>
-              <span className="px-3 py-2.5 text-sm border-r shrink-0" style={{ color: 'var(--text-secondary)', borderColor: 'rgba(255,255,255,0.08)' }}>+91</span>
-              <input className="flex-1 bg-transparent py-2.5 pr-3 text-sm outline-none" style={{ color: 'var(--text-primary)' }} placeholder="10-digit mobile" maxLength={10} value={phone} onChange={e => setPhone(e.target.value.replace(/\D/g, ''))} />
+          <form onSubmit={sendOTP} className="space-y-4 relative">
+            <div className="flex items-center input-dark rounded-xl overflow-hidden focus-within:ring-2 focus-within:ring-blue-500/50 transition-all border border-blue-500/20 bg-[#0a1122]" style={{ padding: 0 }}>
+              <span className="px-4 py-3.5 text-sm font-bold border-r border-blue-500/20 shrink-0 text-blue-400 bg-blue-500/5">+91</span>
+              <input className="flex-1 bg-transparent py-3.5 px-4 text-sm font-semibold outline-none text-white placeholder:text-gray-600 tracking-wide" placeholder="Enter mobile number" maxLength={10} value={phone} onChange={e => setPhone(e.target.value.replace(/\D/g, ''))} />
             </div>
-            {error && <p className="text-xs text-red-400">{error}</p>}
-            <button type="submit" disabled={loading} className="btn-primary w-full">{loading ? 'Sending…' : 'Send OTP'}{!loading && <ArrowRight size={14} />}</button>
+            {error && <p className="text-xs font-semibold text-red-400 flex items-center gap-1"><X size={12} />{error}</p>}
+            <button type="submit" disabled={loading} className="btn-primary w-full h-12 text-sm font-bold shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 relative overflow-hidden group">
+              <span className="relative z-10">{loading ? 'Connecting AI...' : 'Start Job Search'}</span>
+              {!loading && <ArrowRight size={16} className="relative z-10 group-hover:translate-x-1 transition-transform" />}
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+            </button>
           </form>
         ) : (
-          <form onSubmit={verifyOTP} className="space-y-3">
-            <input className="input-dark text-center text-xl tracking-widest font-mono" placeholder="• • • • •" maxLength={6} value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, ''))} />
-            {error && <p className="text-xs text-red-400">{error}</p>}
-            <button type="submit" disabled={loading} className="btn-primary w-full">{loading ? 'Verifying…' : 'Verify & Continue'}{!loading && <ArrowRight size={14} />}</button>
-            <button type="button" onClick={() => { setStep('phone'); setOtp(''); setError(''); }} className="w-full text-center text-xs" style={{ color: 'var(--text-muted)' }}>← Back</button>
+          <form onSubmit={verifyOTP} className="space-y-4 relative">
+            <input className="input-dark text-center text-3xl tracking-[1em] font-black w-full h-14 bg-[#0a1122] border-blue-500/20 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 rounded-xl outline-none text-white placeholder-[var(--text-muted)]" placeholder="------" maxLength={6} value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, ''))} />
+            {error && <p className="text-xs font-semibold text-red-400 flex items-center gap-1"><X size={12} />{error}</p>}
+            <button type="submit" disabled={loading} className="btn-primary w-full h-12 text-sm font-bold shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2">
+              {loading ? 'Authenticating...' : 'Access Hub'}
+              {!loading && <Check size={16} />}
+            </button>
+            <button type="button" onClick={() => { setStep('phone'); setOtp(''); setError(''); }} className="w-full text-center text-xs font-semibold text-gray-500 hover:text-white transition-colors uppercase tracking-wider mt-2">← Change Number</button>
           </form>
         )}
-        <div className="mt-4 pt-4 flex items-center gap-2" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-          <Shield size={11} style={{ color: 'var(--text-muted)' }} />
-          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Your data is never shared. No spam.</p>
+        <div className="mt-6 pt-5 flex items-center justify-center gap-2 border-t border-white/5">
+          <Shield size={12} className="text-green-500" />
+          <p className="text-[10px] font-bold uppercase tracking-widest text-green-500/70">Military-Grade Encryption</p>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function PaymentModal({ plan, price, onClose }) {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handlePay = async () => {
+    setLoading(true);
+    await new Promise(r => setTimeout(r, 1500));
+    setLoading(false);
+    setSuccess(true);
+    setTimeout(() => onClose(), 2000);
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md animate-fade-in p-4">
+      <div className="w-full max-w-md bg-[#0a1122] border border-white/10 rounded-2xl overflow-hidden shadow-2xl relative">
+        <button onClick={onClose} className="absolute right-4 top-4 text-gray-500 hover:text-white transition-colors z-10"><X size={20} /></button>
+
+        {success ? (
+          <div className="p-10 flex flex-col items-center text-center">
+            <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mb-6 text-white animate-bounce shadow-[0_0_30px_rgba(59,130,246,0.5)]">
+              <Check size={32} strokeWidth={3} />
+            </div>
+            <h3 className="text-2xl font-black text-white mb-2">Payment Successful!</h3>
+            <p className="text-gray-400">Welcome to the {plan} plan.</p>
+          </div>
+        ) : (
+          <>
+            <div className="p-6 border-b border-white/10 flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-blue-500 flex items-center justify-center text-white"><CreditCard size={20} /></div>
+              <div>
+                <h3 className="font-bold text-lg text-white">Secure Checkout</h3>
+                <p className="text-xs text-blue-400 uppercase tracking-widest font-bold">Powered by Stripe</p>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div className="flex justify-between items-center text-gray-300">
+                <span>Plan Subscription</span>
+                <span className="font-bold text-white">{plan}</span>
+              </div>
+              <div className="flex justify-between items-center text-gray-300">
+                <span>Total Amount</span>
+                <span className="font-black text-xl text-white">₹{price.toLocaleString()}</span>
+              </div>
+
+              <div className="space-y-3 mt-6">
+                <div className="bg-[#050a14] p-3 rounded-xl border border-white/5 flex items-center gap-3">
+                  <input type="radio" checked readOnly className="w-4 h-4 accent-blue-500" />
+                  <span className="text-sm font-semibold text-gray-200">UPI / Net Banking</span>
+                </div>
+                <div className="bg-[#050a14] p-3 rounded-xl border border-white/5 flex items-center gap-3">
+                  <input type="radio" disabled className="w-4 h-4" />
+                  <span className="text-sm font-semibold text-gray-500">Credit Card (coming soon)</span>
+                </div>
+              </div>
+
+              <button onClick={handlePay} disabled={loading} className="btn-primary w-full h-12 text-sm font-bold mt-6 shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2">
+                {loading ? <><Loader2 size={16} className="animate-spin" /> Processing...</> : `Pay ₹${price.toLocaleString()}`}
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -89,52 +167,49 @@ function OTPForm({ onSuccess }) {
 function FAQItem({ q, a }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="rounded-xl overflow-hidden" style={{ border: '1px solid var(--border)', background: open ? 'rgba(59,130,246,0.05)' : 'var(--glass)' }}>
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between gap-4 text-left p-5">
-        <span className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>{q}</span>
-        <ChevronDown size={15} className={`shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} style={{ color: 'var(--text-muted)' }} />
+    <div className="rounded-2xl overflow-hidden transition-all duration-300 hover:border-blue-500/30" style={{ border: '1px solid var(--border)', background: open ? 'rgba(59,130,246,0.08)' : 'var(--glass)' }}>
+      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between gap-4 text-left p-6">
+        <span className="font-bold text-base" style={{ color: 'var(--text-primary)' }}>{q}</span>
+        <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all ${open ? 'bg-blue-500 text-white' : 'bg-white/5 text-[var(--text-muted)] group-hover:bg-white/10'}`}>
+          <ChevronDown size={18} className={`transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
+        </div>
       </button>
-      {open && <div className="px-5 pb-5 text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{a}</div>}
+      <div className={`grid transition-all duration-300 ease-in-out ${open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+        <div className="overflow-hidden">
+          <div className="px-6 pb-6 pt-2 text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{a}</div>
+        </div>
+      </div>
     </div>
   );
 }
 
 const features = [
-  { icon: Search, label: 'Multi-Platform Scraper', desc: 'LinkedIn, Indeed, Glassdoor, Instahyre — filter by role, salary, location.', badge: '4 Platforms', color: '#3b82f6' },
-  { icon: Users, label: 'Recruiter Enrichment', desc: 'AI finds recruiter emails, LinkedIn profiles and phone numbers automatically.', badge: '94% Accuracy', color: '#a855f7' },
-  { icon: MessageSquare, label: 'Outreach Creator', desc: 'Personalized templates with variable substitution and one-click AI polish.', badge: 'AI-Powered', color: '#10b981' },
-  { icon: BarChart2, label: 'Analytics Dashboard', desc: 'Track open rates, reply rates, and response trends to optimize your strategy.', badge: '38% Avg Reply', color: '#f59e0b' },
-  { icon: Cpu, label: 'AI Job Matching', desc: 'Smart compatibility scoring matches you to relevant roles before you apply.', badge: 'New ✨', color: '#00e5ff' },
-  { icon: Clock, label: 'Follow-up Reminders', desc: 'Automated Day 1/4/7 follow-up reminders. Never drop the ball again.', badge: '3x More Replies', color: '#f97316' },
+  { icon: Search, label: 'Omni-Channel Aggregation', desc: 'Real-time synchronization with LinkedIn, Indeed, Glassdoor, Naukri, and IIM Jobs. We cover the entire market.', badge: '6+ Tech Portals', color: '#3b82f6' },
+  { icon: Globe, label: 'Deep Target Insights', desc: 'Pre-interview intelligence gathering via Premium Market Databases. We map out funding rounds, director history, and company trajectory.', badge: 'Rich Data', color: '#a855f7' },
+  { icon: Cpu, label: 'Hyper-Personalized Matching', desc: 'Our AI engine reads your resume and cross-references it against market demands to compute precise Match Scores.', badge: 'AI Native', color: '#00e5ff' },
+  { icon: Users, label: 'Triple-Verified Recruitment', desc: 'We don\'t just find emails. We locate direct hiring managers, HR heads, and technical leads, triple-verifying contact paths.', badge: 'Direct Line', color: '#10b981' },
+  { icon: Target, label: 'Outreach & Follow-Up Automation', desc: 'Done-for-you sequencing. Beautifully crafted pitches hit recruiter inboxes automatically until you secure the interview.', badge: 'Autopilot', color: '#f59e0b' },
+  { icon: BarChart2, label: 'End-to-End Tracking Hub', desc: 'A gorgeous dashboard that visualizes your application funnel. Watch interviews stack up while you sleep.', badge: 'Live Metrics', color: '#f97316' },
 ];
 
-const lbItems = [
-  { rank: 1, label: 'Job Scraper', installs: '265.8K', tag: 'Core' },
-  { rank: 2, label: 'Recruiter AI', installs: '146.6K', tag: 'AI' },
-  { rank: 3, label: 'Outreach Templates', installs: '110.8K', tag: 'Templates' },
-  { rank: 4, label: 'Analytics Engine', installs: '98.9K', tag: 'Analytics' },
-  { rank: 5, label: 'Follow-up Scheduler', installs: '80.7K', tag: 'Automation' },
-  { rank: 6, label: 'Resume Parser', installs: '47.3K', tag: 'AI' },
-];
-
-const testimonials = [
-  { name: 'Arjun Mehta', role: 'Placed @ Flipkart', av: 'AM', text: 'JobFlow cut my search time by 70%. I had 3 offers in 6 weeks.', rating: 5 },
-  { name: 'Priya Nair', role: 'SWE @ Razorpay', av: 'PN', text: 'The AI recruiter enrichment is magical. Direct contacts I couldn\'t find anywhere.', rating: 5 },
-  { name: 'Karthik Reddy', role: 'ML Eng @ Google India', av: 'KR', text: 'The outreach templates + follow-up scheduler doubled my reply rate.', rating: 5 },
+const team = [
+  { name: 'Aditya Pareek', role: 'Co-Founder and CEO', image: 'https://media.licdn.com/dms/image/v2/D4D03AQE8Kx0yN_Nl2A/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1703672583279?e=1745452800&v=beta&t=S0BfK2iW7xH5oQzM-J1tA_i3L_zM5v6L-N9U8n0Y7kQ', ln: 'https://in.linkedin.com/in/adityapareek' },
+  { name: 'Sumit Goyal', role: 'Co-Founder and COO', image: 'https://media.licdn.com/dms/image/v2/D4D03AQH3xJp_4h0Lqg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1718260027725?e=1745452800&v=beta&t=_bZt6-V8x_X_2k1H-H8Q-9k_h8h8g_y_u7j_jS_V_E', ln: 'https://in.linkedin.com/in/sumit-goyal-7a3bb3100' },
+  { name: 'Chirag Ameta', role: 'Co-Founder and CPO', image: 'https://media.licdn.com/dms/image/v2/D5603AQF48Nl8XbVQqA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1714571008035?e=1745452800&v=beta&t=Hk0oQ5w-P2w9_J_f5YQQe_Jtq1-d8zKQH3t2aM1GZ-s', ln: 'https://in.linkedin.com/in/chirag-ameta-b1bb84176' },
 ];
 
 const plans = [
-  { name: 'Launch', price: 0, annualPrice: 0, desc: 'Get started for free', feats: ['50 jobs/month', '10 recruiter lookups', '5 outreach messages', 'Basic analytics'], cta: 'Start Free', highlight: false },
-  { name: 'Accelerate', price: 1999, annualPrice: 1499, desc: 'For active job seekers', feats: ['150 jobs/month', '50 recruiter lookups', 'Unlimited outreach', 'AI message polish', 'Follow-up scheduler', 'Priority support'], cta: 'Start Trial', highlight: true, badge: 'Most Popular' },
-  { name: 'Dominate', price: 3999, annualPrice: 2999, desc: 'For power users', feats: ['Unlimited everything', 'AI job scoring', 'LinkedIn automation', 'Multi-profile', 'API access', 'Success manager'], cta: 'Contact Sales', highlight: false },
+  { name: 'Beta Launch', price: 0, annualPrice: 0, desc: 'Experience the AI Hub', feats: ['50 Premium Job Syncs/mo', '10 Deep Recruiter Lookups', 'Basic Company Insights (Intel)', '1 Active Campaign'], cta: 'Start Free', highlight: false },
+  { name: 'Active Search', price: 2999, annualPrice: 2499, desc: 'Outsource your daily hunt', feats: ['300 Premium Job Syncs/mo', '100 Verified Recruiter Invites', 'Full Company Intel Analytics', 'AI-Tuned Matching Algorithms', 'Automated LinkedIn Outreach', 'Priority Inbox Placements'], cta: 'Upgrade Now', highlight: true, badge: 'High ROI' },
+  { name: 'Executive Suite', price: 9999, annualPrice: 7999, desc: 'For Senior & C-Level Transitions', feats: ['Unlimited VIP Syncs', 'Direct Founder/CEO Contact Unlocks', 'Dedicated Success Strategist', 'Bespoke Resume Reprogramming', 'Interview Preparation AI Agent', 'End-to-End Handled Application'], cta: 'Contact Partners', highlight: false },
 ];
 
 const faqs = [
-  { q: 'How does the job scraper work?', a: 'Our AI simultaneously searches LinkedIn, Indeed, Glassdoor, and Instahyre using your filters, ranking results by match score and freshness.' },
-  { q: 'Is my data safe?', a: 'Absolutely. We use AES-256 encryption and never sell your data. Your phone is only used for authentication.' },
-  { q: 'How accurate is recruiter enrichment?', a: 'About 94% accuracy using LinkedIn data, company directories, and proprietary databases. All contacts are verified.' },
-  { q: 'Can I try before subscribing?', a: 'Yes! The Launch plan is completely free forever. No credit card required.' },
-  { q: 'What is the AI message polish feature?', a: 'One click runs your draft through our AI to improve tone, clarity, personalization, and reply probability.' },
+  { q: 'What does "Done-For-You" actually mean?', a: 'It means we treat your job search like a B2B sales campaign. You input your target role, salary (e.g., ₹20 LPA+), and preferred locations. Our system syncs, filters, analyzes the companies via Private Databases, finds the decision-makers, and executes outreach. You literally just show up to the interviews.' },
+  { q: 'Which open source job portals do you sync with?', a: 'Our live-scan engine currently pulls real-time listings from LinkedIn, Naukri, Indeed, Glassdoor, IIM Jobs, and AngelList (Wellfound). We aggregate them into a single, deduplicated, highly enriched feed.' },
+  { q: 'How do you generate insights about a company?', a: 'We employ deep web crawling. Before you apply or interview, we present you with employer financial health data, funding rounds, recent PR news, and employee sentiment analysis from Glassdoor. You walk into interviews knowing more than they do.' },
+  { q: 'Is this only for high-paying Tech jobs?', a: 'No. Our algorithm is trained across the entire spectrum—from Fresher Operational roles at ₹4-6 LPA, Mid-level Marketing at ₹15-25 LPA, to Executive Finance and Tech positions hitting ₹60+ LPA. The system adapts its scoring and outreach tactics based on the tier.' },
+  { q: 'How does the Recruiter Enrichment differ from just Googling?', a: 'Googling yields generic "hr@company.com" addresses. Our Enrichment simulates proprietary lookup algorithms to identify the specific Talent Acquisition Managers, Technical Leads, or even Founders relevant to your job req. We then triple-verify the email and phone data for 90%+ deliverability.' },
 ];
 
 export default function LandingPage() {
@@ -143,6 +218,7 @@ export default function LandingPage() {
   const [annual, setAnnual] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [checkoutPlan, setCheckoutPlan] = useState(null);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
@@ -152,176 +228,168 @@ export default function LandingPage() {
 
   const handleLogin = (phone) => { login(phone); router.push('/dashboard'); };
 
+  const handleUpgradeClick = (planName, price) => {
+    if (price === 0) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.querySelector('input[placeholder="Enter mobile number"]')?.focus();
+    } else {
+      setCheckoutPlan({ plan: planName, price: price });
+    }
+  };
+
   return (
-    <>
+    <div className="bg-[var(--bg-base)] text-white overflow-x-hidden selection:bg-blue-500/30">
       <Head>
-        <title>JobFlow — AI Job Search Automation</title>
-        <meta name="description" content="Automate your job search. Scrape jobs, find recruiters, send personalized outreach, and track everything on autopilot." />
+        <title>JobFlow — AI Job Search Outsourcing</title>
+        <meta name="description" content="Outsource your complete job seeking lifecycle. Real-time sourcing, Deep Company insights, AI matching, and automated outreach." />
       </Head>
 
-      {/* Navbar */}
-      <nav className="fixed top-0 inset-x-0 z-50 transition-all duration-300" style={{ background: scrolled ? 'rgba(7,13,26,0.92)' : 'transparent', backdropFilter: scrolled ? 'blur(20px)' : 'none', borderBottom: scrolled ? '1px solid var(--border)' : '1px solid transparent' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#3b82f6,#2563eb)' }}><Briefcase size={13} className="text-white" /></div>
-            <span className="font-black text-lg tracking-tight" style={{ color: 'var(--text-primary)' }}>Job<span className="gradient-text">Flow</span></span>
+      {checkoutPlan && <PaymentModal plan={checkoutPlan.plan} price={checkoutPlan.price} onClose={() => setCheckoutPlan(null)} />}
+
+      {/* Modern Blurry Nav */}
+      <nav className="fixed top-0 inset-x-0 z-50 transition-all duration-500"
+        style={{
+          background: scrolled ? 'rgba(7,13,26,0.7)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
+          borderBottom: scrolled ? '1px solid rgba(255,255,255,0.05)' : '1px solid transparent'
+        }}>
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3 cursor-pointer group" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <img src="/logo.png" alt="JobFlow Logo" className="w-10 h-10 rounded-xl shadow-[0_4px_12px_rgba(59,130,246,0.4)] object-cover" />
+            <span className="font-black text-2xl tracking-tighter" style={{ color: 'var(--text-primary)' }}>Job<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Flow</span></span>
           </div>
-          <div className="hidden md:flex items-center gap-6">
-            {['Features', 'Pricing', 'FAQ'].map(l => (
-              <a key={l} href={`#${l.toLowerCase()}`} className="text-sm font-medium transition-colors" style={{ color: 'var(--text-secondary)' }}
-                onMouseEnter={e => e.target.style.color = 'var(--text-primary)'} onMouseLeave={e => e.target.style.color = 'var(--text-secondary)'}>{l}</a>
+
+          <div className="hidden md:flex items-center gap-1 bg-white/5 rounded-full px-2 py-1.5 border border-white/5 backdrop-blur-md">
+            {['Service', 'Process', 'Pricing', 'Team', 'FAQ'].map(l => (
+              <a key={l} href={`#${l.toLowerCase()}`} className="text-sm font-semibold px-4 py-2 rounded-full transition-all hover:bg-white/10 hover:text-white" style={{ color: 'var(--text-secondary)' }}>
+                {l}
+              </a>
             ))}
           </div>
-          <div className="flex items-center gap-3">
-            <a href="#get-started" className="btn-primary text-sm hidden sm:flex">Get Started <ArrowRight size={13} /></a>
-            <button className="md:hidden p-2 rounded-lg" style={{ color: 'var(--text-secondary)', background: 'var(--glass)' }} onClick={() => setMobileMenu(!mobileMenu)}>
-              {mobileMenu ? <X size={17} /> : <Menu size={17} />}
+
+          <div className="flex items-center gap-4">
+            <a href="#get-started" className="hidden sm:inline-flex relative group">
+              <div className="absolute inset-0 bg-blue-500 rounded-xl blur-md opacity-30 group-hover:opacity-70 transition-opacity" />
+              <div className="relative btn-primary text-sm h-11 px-6 rounded-xl flex items-center gap-2 border border-white/10 font-bold tracking-wide shadow-2xl">
+                Access Hub <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </div>
+            </a>
+            <button className="md:hidden p-2 rounded-xl border border-white/10 bg-white/5" onClick={() => setMobileMenu(!mobileMenu)}>
+              {mobileMenu ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
+
         {mobileMenu && (
-          <div className="md:hidden px-4 pb-4 space-y-1" style={{ borderTop: '1px solid var(--border)', background: 'rgba(7,13,26,0.95)' }}>
-            {['Features', 'Pricing', 'FAQ'].map(l => (
-              <a key={l} href={`#${l.toLowerCase()}`} onClick={() => setMobileMenu(false)} className="block px-4 py-2.5 rounded-xl text-sm" style={{ color: 'var(--text-secondary)' }}>{l}</a>
+          <div className="md:hidden absolute top-full left-0 w-full bg-[#070d1a]/95 backdrop-blur-xl border-b border-white/10 py-4 px-6 space-y-2 shadow-2xl">
+            {['Service', 'Process', 'Pricing', 'Team', 'FAQ'].map(l => (
+              <a key={l} href={`#${l.toLowerCase()}`} onClick={() => setMobileMenu(false)} className="block py-3 text-lg font-bold border-b border-white/5 text-gray-300">
+                {l}
+              </a>
             ))}
+            <a href="#get-started" onClick={() => setMobileMenu(false)} className="block mt-4 btn-primary text-center py-4 rounded-xl text-lg w-full">Access Hub</a>
           </div>
         )}
       </nav>
 
-      {/* Hero */}
-      <section id="get-started" className="relative min-h-screen flex items-center pt-16 overflow-hidden" style={{ background: 'var(--bg-base)' }}>
-        <div className="orb animate-orb" style={{ width: 500, height: 500, top: -100, left: -150, background: 'radial-gradient(circle,rgba(59,130,246,0.18) 0%,transparent 70%)' }} />
-        <div className="orb animate-orb" style={{ width: 400, height: 400, bottom: -80, right: -100, background: 'radial-gradient(circle,rgba(168,85,247,0.12) 0%,transparent 70%)', animationDelay: '2s' }} />
-        <div className="absolute inset-0 dot-grid opacity-40" style={{ zIndex: 0 }} />
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-24 grid lg:grid-cols-2 gap-16 items-center w-full">
-          <div className="animate-fade-in">
-            <div className="badge badge-blue mb-5 w-fit"><Zap size={11} /> AI-Powered · 10,000+ job seekers</div>
-            <h1 className="text-5xl sm:text-6xl font-black leading-[1.08] tracking-tight mb-5" style={{ color: 'var(--text-primary)' }}>
-              Land Your <span className="shimmer-text">Dream Job</span><br />on Autopilot
+      {/* Cinematic Hero Section */}
+      <section id="get-started" className="relative min-h-[105vh] flex items-center pt-24 pb-12 overflow-hidden justify-center perspective-1000">
+        {/* Abstract 3D Gradients */}
+        <div className="absolute top-1/4 -left-[20%] w-[60%] h-[60%] bg-blue-600/20 rounded-full blur-[120px] mix-blend-screen animate-blob" />
+        <div className="absolute bottom-1/4 -right-[20%] w-[50%] h-[50%] bg-purple-600/20 rounded-full blur-[120px] mix-blend-screen animate-blob animation-delay-2000" />
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-20 mix-blend-overlay pointer-events-none" />
+
+        {/* Floating AI Brain Image */}
+        <div className="absolute top-[15%] right-[-10%] w-[500px] xl:top-[10%] xl:right-[-5%] xl:w-[700px] opacity-40 xl:opacity-60 mix-blend-screen animate-float pointer-events-none" style={{ animationDuration: '10s' }}>
+          <img src="/brain.png" alt="AI Brain Core" className="w-full h-full object-contain filter hover:scale-105 transition-transform duration-1000 drop-shadow-[0_0_80px_rgba(59,130,246,0.8)] animate-pulse" style={{ animationDuration: '6s' }} />
+        </div>
+
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 grid xl:grid-cols-12 gap-16 items-center">
+
+          <div className="xl:col-span-7 flex flex-col items-start pt-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 mb-8 transform hover:scale-105 transition-transform cursor-default">
+              <span className="relative flex h-2 w-2 shadow-[0_0_10px_#3b82f6]">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+              </span>
+              <span className="text-xs font-bold uppercase tracking-widest text-blue-300">Market intelligence Engine Active</span>
+            </div>
+
+            <h1 className="text-5xl sm:text-7xl font-black leading-[1.05] tracking-tight mb-8" style={{ color: 'var(--text-primary)' }}>
+              Stop Applying. <br />
+              Let AI <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 drop-shadow-[0_0_30px_rgba(59,130,246,0.5)]">Outsource</span><br />
+              Your Job Search.
             </h1>
-            <p className="text-lg leading-relaxed mb-8 max-w-lg" style={{ color: 'var(--text-secondary)' }}>
-              Scrape jobs across 4 platforms, find recruiter contacts with AI, craft personalized outreach, and track every interaction — from one dashboard.
+
+            <p className="text-lg sm:text-xl font-medium leading-relaxed mb-10 max-w-2xl text-gray-400 border-l-4 border-blue-500/50 pl-6 py-2 bg-gradient-to-r from-blue-500/5 to-transparent">
+              We handle the entire lifecycle. Live syncing from 6+ open-source portals, deep market insights, triple-verified recruiter contacts, and automated personalized outreach.
             </p>
-            <div className="flex flex-wrap gap-6 mb-8">
-              {[{ val: 70, suf: '%', label: 'Less time searching' }, { val: 38, suf: '%', label: 'Avg reply rate' }, { val: 10, suf: 'k+', label: 'Jobs placed' }].map(({ val, suf, label }) => (
-                <div key={label}>
-                  <div className="text-2xl font-black gradient-text"><Counter end={val} suffix={suf} /></div>
-                  <div className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{label}</div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-12 w-full">
+              {[
+                { title: 'Live Sync', val: 'LinkedIn', icon: Eye },
+                { title: 'Insights', val: 'Private DB', icon: Target },
+                { title: 'Match', val: 'AI Score', icon: Cpu },
+                { title: 'Outreach', val: 'Automated', icon: PlayCircle }
+              ].map((stat, i) => (
+                <div key={i} className="flex flex-col gap-2">
+                  <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-blue-400">
+                    <stat.icon size={18} />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">{stat.title}</p>
+                    <p className="text-sm font-black text-gray-200">{stat.val}</p>
+                  </div>
                 </div>
               ))}
             </div>
-            <div className="flex flex-wrap gap-3 mb-8">
-              <a href="#get-started" className="btn-primary">Start Free <ArrowRight size={14} /></a>
-              <a href="#features" className="btn-ghost">See Features</a>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="flex -space-x-2">
-                {['AM', 'PN', 'KR', 'NK', 'AD'].map((av, i) => (
-                  <div key={i} className="w-7 h-7 rounded-full border-2 flex items-center justify-center text-xs font-bold text-white" style={{ borderColor: 'var(--bg-base)', background: ['#3b82f6', '#a855f7', '#10b981', '#f59e0b', '#ef4444'][i] }}>{av}</div>
-                ))}
-              </div>
-              <div>
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => <Star key={i} size={11} fill="#f59e0b" stroke="none" />)}
-                  <span className="text-xs font-bold ml-1" style={{ color: 'var(--text-primary)' }}>4.9</span>
-                </div>
-                <p className="text-xs" style={{ color: 'var(--text-muted)' }}>from 2,400+ reviews</p>
-              </div>
-            </div>
           </div>
-          <div className="flex justify-center lg:justify-end animate-slide-up">
+
+          <div className="xl:col-span-5 flex justify-center xl:justify-end">
             <OTPForm onSuccess={handleLogin} />
           </div>
+
         </div>
       </section>
 
-      {/* Logos */}
-      <section className="py-8" style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', background: 'rgba(13,21,38,0.5)' }}>
-        <p className="text-center text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--text-muted)' }}>Trusted by job seekers who landed at</p>
-        <div className="flex flex-wrap justify-center gap-x-10 gap-y-2 px-4">
-          {['Flipkart', 'Razorpay', 'PhonePe', 'Zerodha', 'Swiggy', 'CRED', 'Freshworks', 'Infosys'].map(l => (
-            <span key={l} className="text-sm font-bold" style={{ color: 'rgba(148,163,184,0.5)', letterSpacing: '0.05em' }}>{l}</span>
-          ))}
-        </div>
-      </section>
-
-      {/* Features */}
-      <section id="features" className="py-24" style={{ background: 'var(--bg-base)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-14">
-            <div className="badge badge-purple mx-auto mb-4 w-fit">Features</div>
-            <h2 className="text-4xl font-black mb-4" style={{ color: 'var(--text-primary)' }}>Everything to <span className="gradient-text">get hired</span></h2>
-            <p className="text-base max-w-lg mx-auto" style={{ color: 'var(--text-secondary)' }}>One platform automating the most time-consuming parts of your job search.</p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 stagger">
-            {features.map(({ icon: Icon, label, desc, badge, color }) => (
-              <div key={label} className="card-dark p-6 animate-fade-in">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: `${color}1a`, border: `1px solid ${color}33` }}><Icon size={20} style={{ color }} /></div>
-                  <span className="badge badge-gray text-xs">{badge}</span>
-                </div>
-                <h3 className="font-bold mb-2 text-sm" style={{ color: 'var(--text-primary)' }}>{label}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Leaderboard section */}
-      <section className="py-20" style={{ background: 'var(--bg-surface)', borderTop: '1px solid var(--border)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            <div>
-              <div className="badge badge-blue mb-4 w-fit">Automation Toolkit</div>
-              <h2 className="text-4xl font-black mb-4" style={{ color: 'var(--text-primary)' }}>Top-used <span className="gradient-text">modules</span></h2>
-              <p className="text-base mb-4" style={{ color: 'var(--text-secondary)' }}>The most powerful job-search automations, ranked by usage across 10,000+ users.</p>
-              <code className="text-sm font-mono px-4 py-2.5 rounded-xl inline-block mb-4" style={{ background: 'var(--glass)', border: '1px solid var(--border)', color: '#60a5fa' }}>$ npx jobflow add &lt;module&gt;</code>
-              <div className="flex gap-2">
-                {['All Time', 'Trending', 'New'].map((t, i) => (
-                  <span key={t} className={`badge ${i === 0 ? 'badge-blue' : 'badge-gray'} cursor-pointer select-none`}>{t}</span>
-                ))}
-              </div>
-            </div>
-            <div className="space-y-2">
-              {lbItems.map(({ rank, label, installs, tag }) => (
-                <div key={rank} className="lb-row">
-                  <span className="w-6 text-center text-sm font-black font-mono shrink-0" style={{ color: rank <= 3 ? '#f59e0b' : 'var(--text-muted)' }}>{rank <= 3 ? ['🥇', '🥈', '🥉'][rank - 1] : rank}</span>
-                  <p className="flex-1 font-semibold text-sm truncate" style={{ color: 'var(--text-primary)' }}>{label}</p>
-                  <span className="badge badge-gray shrink-0">{tag}</span>
-                  <span className="text-sm font-bold font-mono shrink-0" style={{ color: 'var(--primary)' }}>{installs}</span>
-                </div>
+      {/* Corporate Trusted Section */}
+      <section className="py-12 border-t border-b border-white/5 bg-[#0a1122]/50">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col items-center">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500 mb-8 text-center">We discover opportunities and place candidates across top organizations</p>
+          <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+            <ul className="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
+              {['Zomato', 'Freshworks', 'Razorpay', 'Zerodha', 'Swiggy', 'CRED', 'Paytm', 'PhonePe', 'Flipkart'].map(logo => (
+                <li key={logo} className="text-2xl font-black font-serif tracking-tighter mx-10 text-white">{logo}.</li>
               ))}
-            </div>
+            </ul>
           </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-16 relative overflow-hidden" style={{ background: 'linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 50%,#7c3aed 100%)' }}>
-        <div className="absolute inset-0 dot-grid opacity-20" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-          {[{ val: 10000, suf: '+', label: 'Jobs scraped/day' }, { val: 38, suf: '%', label: 'Avg reply rate' }, { val: 94, suf: '%', label: 'Recruiter accuracy' }, { val: 70, suf: '%', label: 'Time saved' }].map(({ val, suf, label }) => (
-            <div key={label}><div className="text-4xl font-black text-white"><Counter end={val} suffix={suf} /></div><p className="text-blue-200 text-sm mt-1">{label}</p></div>
-          ))}
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-24" style={{ background: 'var(--bg-base)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
-            <div className="badge badge-green mx-auto mb-4 w-fit">Testimonials</div>
-            <h2 className="text-4xl font-black" style={{ color: 'var(--text-primary)' }}>Real results from <span className="gradient-text">real users</span></h2>
+      {/* "Service" Features - 3D Card Grid */}
+      <section id="service" className="py-32 relative">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-20">
+            <span className="text-blue-500 font-bold tracking-widest uppercase text-sm mb-3 block">The Service Paradigm</span>
+            <h2 className="text-4xl sm:text-5xl font-black mb-6 text-white leading-tight">We Don't Provide Tools.<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">We Provide Execution.</span></h2>
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto">From discovering obscure startup listings to analyzing Fortune 500 balance sheets before your interview. It's a complete done-for-you service.</p>
           </div>
-          <div className="grid sm:grid-cols-3 gap-4">
-            {testimonials.map(({ name, role, av, text, rating }) => (
-              <div key={name} className="card-dark p-6 flex flex-col gap-4">
-                <div className="flex gap-0.5">{[...Array(rating)].map((_, i) => <Star key={i} size={13} fill="#f59e0b" stroke="none" />)}</div>
-                <p className="text-sm leading-relaxed flex-1" style={{ color: 'var(--text-secondary)' }}>"{text}"</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ background: 'linear-gradient(135deg,#3b82f6,#a855f7)' }}>{av}</div>
-                  <div><p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{name}</p><p className="text-xs" style={{ color: 'var(--text-muted)' }}>{role}</p></div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map(({ icon: Icon, label, desc, badge, color }, index) => (
+              <div key={label} className="group relative p-[1px] rounded-3xl overflow-hidden bg-gradient-to-b from-white/10 to-white/0 hover:from-white/20 transition-colors duration-500">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-xl" />
+                <div className="relative h-full bg-[#0a1122]/90 backdrop-blur-xl rounded-3xl p-8 flex flex-col gap-6 transform-gpu transition-transform duration-500 group-hover:-translate-y-1">
+                  <div className="flex justify-between items-start">
+                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: `linear-gradient(135deg, ${color}20, ${color}05)`, border: `1px solid ${color}40`, color: color }}>
+                      <Icon size={24} />
+                    </div>
+                    <span className="text-[10px] uppercase font-bold px-3 py-1 bg-white/5 border border-white/10 rounded-full tracking-wider text-gray-300 transition-colors">{badge}</span>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-3 text-white transition-colors">{label}</h3>
+                    <p className="text-sm text-gray-400 leading-relaxed">{desc}</p>
+                  </div>
                 </div>
               </div>
             ))}
@@ -329,39 +397,140 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section id="pricing" className="py-24" style={{ background: 'var(--bg-surface)', borderTop: '1px solid var(--border)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-10">
-            <div className="badge badge-orange mx-auto mb-4 w-fit">Pricing</div>
-            <h2 className="text-4xl font-black mb-6" style={{ color: 'var(--text-primary)' }}>Simple <span className="gradient-text">pricing</span></h2>
-            <div className="flex items-center justify-center gap-3">
-              <span className="text-sm font-medium" style={{ color: annual ? 'var(--text-muted)' : 'var(--text-primary)' }}>Monthly</span>
-              <button onClick={() => setAnnual(!annual)} className="w-12 h-6 rounded-full relative transition-colors" style={{ background: annual ? 'var(--primary)' : 'rgba(255,255,255,0.1)' }}>
-                <div className="w-5 h-5 bg-white rounded-full absolute top-0.5 transition-all" style={{ left: annual ? '26px' : '2px' }} />
+      {/* "Process" - Deep Dive section */}
+      <section id="process" className="py-32 border-t border-white/5 bg-[#050a14] relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-600/10 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+
+            <div className="order-2 lg:order-1 relative perspective-1000">
+              <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 blur-3xl transform rotate-12 scale-110 opacity-50" />
+              <div className="relative bg-[#0a1122]/80 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 shadow-2xl transform transition-transform duration-700">
+                <div className="flex items-center gap-4 mb-8 pb-8 border-b border-white/10">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg"><Globe size={28} className="text-white" /></div>
+                  <div>
+                    <h4 className="font-bold text-lg text-white">Premium DB Synthesis</h4>
+                    <p className="text-xs text-gray-400 font-mono mt-1">Status: Extracting Live Intelligence</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {[
+                    { l: 'Company Match:', v: 'Razorpay Software Pvt Ltd', c: 'text-white' },
+                    { l: 'Funding Stage:', v: 'Series F ($375M)', c: 'text-green-400' },
+                    { l: 'Corporate Setup:', v: 'Active (DIR-12 FILED)', c: 'text-blue-400' },
+                    { l: 'Growth Sentiment:', v: 'Hyper-Scale (+45% YoY hiring)', c: 'text-purple-400' },
+                  ].map(row => (
+                    <div key={row.l} className="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5 hover:bg-white/10 transition-colors">
+                      <span className="text-sm font-semibold text-gray-400">{row.l}</span>
+                      <span className={`text-sm font-bold font-mono ${row.c}`}>{row.v}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="order-1 lg:order-2">
+              <span className="text-purple-500 font-bold tracking-widest uppercase text-sm mb-3 block">Corporate Intelligence</span>
+              <h2 className="text-4xl sm:text-5xl font-black mb-8 text-white leading-tight">Don't Interview <br />In The Dark.</h2>
+              <p className="text-lg text-gray-400 mb-8 leading-relaxed">
+                Applying on a portal is amateur. Our system pulls live statutory filings from <b>Private Registries</b>, funding rounds from <b>Premium VC Trackers</b>, and sentiment from <b>Glassdoor</b> to build a comprehensive dossier on the employer.
+              </p>
+              <ul className="space-y-4 mb-10">
+                {['Know their funding run-way before accepting an offer.', 'Identify exactly which Director is responsible for your department.', 'Tailor your automated outreach based on their recent PR announcements.'].map((li, i) => (
+                  <li key={i} className="flex items-start gap-4">
+                    <div className="mt-1 bg-purple-500/20 p-1 rounded-md border border-purple-500/30"><Check size={14} className="text-purple-400" /></div>
+                    <span className="text-gray-300 font-medium">{li}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* The Team / Co-founders */}
+      <section id="team" className="py-32 bg-[var(--bg-base)] border-t border-white/5 relative">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-20">
+            <span className="text-green-500 font-bold tracking-widest uppercase text-sm mb-3 block">The Brains Behind The Operation</span>
+            <h2 className="text-4xl sm:text-5xl font-black mb-6 text-white leading-tight">Meet The Founders.</h2>
+            <p className="text-lg text-gray-400 max-w-2xl mx-auto">Built by industry veterans who realized the traditional job search was hopelessly broken and decided to automate it.</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto">
+            {team.map((member, i) => (
+              <div key={member.name} className="flex flex-col items-center group">
+                <div className="relative w-48 h-48 mb-8">
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 opacity-20 blur-md transition-opacity duration-500" />
+                  <div className="absolute inset-1 bg-[var(--bg-base)] rounded-full z-10 overflow-hidden border-2 border-white/10 group-hover:border-transparent transition-colors">
+                    <img src={member.image} alt={member.name} className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-110" />
+                  </div>
+                </div>
+                <h3 className="text-2xl font-black text-white mb-2 tracking-tight">{member.name}</h3>
+                <p className="text-sm font-bold uppercase tracking-widest text-blue-400 mb-4">{member.role}</p>
+                <a href={member.ln} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-[#0077b5] hover:border-transparent transition-all group/ln">
+                  <Linkedin size={16} className="text-gray-400 group-hover/ln:text-white transition-colors" />
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing - SaaS/Service Hybrid */}
+      <section id="pricing" className="py-32 border-t border-white/5 relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[500px] bg-blue-600/5 rounded-[100%] blur-[100px] pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="text-center mb-16">
+            <span className="text-orange-500 font-bold tracking-widest uppercase text-sm mb-3 block">Service Tiers</span>
+            <h2 className="text-4xl sm:text-5xl font-black mb-8 text-white leading-tight">Fractional Cost. <br />Exponential <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-400">Results.</span></h2>
+
+            <div className="inline-flex items-center justify-center gap-4 p-2 bg-white/5 border border-white/10 rounded-full backdrop-blur-md">
+              <span className={`text-sm font-bold px-4 cursor-pointer transition-colors ${!annual ? 'text-white' : 'text-gray-500'}`} onClick={() => setAnnual(false)}>Monthly Retainer</span>
+              <button onClick={() => setAnnual(!annual)} className="w-14 h-7 rounded-full relative transition-colors bg-blue-600 shadow-inner overflow-hidden">
+                <div className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-all duration-300 shadow-md ${annual ? 'left-[32px]' : 'left-1'}`} />
               </button>
-              <span className="text-sm font-medium flex items-center gap-2" style={{ color: annual ? 'var(--text-primary)' : 'var(--text-muted)' }}>Annual <span className="badge badge-green">Save 25%</span></span>
+              <span className={`text-sm font-bold px-4 cursor-pointer transition-colors flex items-center gap-2 ${annual ? 'text-white' : 'text-gray-500'}`} onClick={() => setAnnual(true)}>
+                Annual Contract <span className="px-2 py-0.5 rounded text-[10px] uppercase font-black bg-orange-500/20 text-orange-400 border border-orange-500/30">Save 25%</span>
+              </span>
             </div>
           </div>
-          <div className="grid sm:grid-cols-3 gap-4 max-w-5xl mx-auto">
+
+          <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {plans.map(({ name, price, annualPrice, desc, feats, cta, highlight, badge }) => (
-              <div key={name} className="p-6 rounded-2xl relative flex flex-col" style={{ background: highlight ? 'linear-gradient(135deg,rgba(37,99,235,0.3),rgba(124,58,237,0.2))' : 'var(--glass)', border: highlight ? '1px solid rgba(59,130,246,0.5)' : '1px solid var(--border)', boxShadow: highlight ? '0 0 30px rgba(59,130,246,0.2)' : 'none' }}>
-                {badge && <div className="absolute -top-3 left-1/2 -translate-x-1/2"><span className="badge badge-blue">{badge}</span></div>}
-                <div className="mb-4">
-                  <h3 className="font-black text-lg mb-0.5" style={{ color: 'var(--text-primary)' }}>{name}</h3>
-                  <p className="text-xs mb-3" style={{ color: 'var(--text-muted)' }}>{desc}</p>
-                  {price === 0 ? <span className="text-4xl font-black" style={{ color: 'var(--text-primary)' }}>Free</span> : (
-                    <div className="flex items-baseline gap-1"><span className="text-4xl font-black gradient-text">₹{(annual ? annualPrice : price).toLocaleString()}</span><span className="text-sm" style={{ color: 'var(--text-muted)' }}>/mo</span></div>
-                  )}
+              <div key={name} className={`relative flex flex-col p-px rounded-[2rem] transition-transform duration-500 hover:-translate-y-2 ${highlight ? 'bg-gradient-to-b from-blue-500 to-purple-600 shadow-[0_20px_80px_rgba(59,130,246,0.3)] z-10 scale-105' : 'bg-white/10'}`}>
+                {badge && <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20"><span className="px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg border border-white/20">{badge}</span></div>}
+
+                <div className="flex-1 rounded-[2rem] bg-[#0a1122] p-8 flex flex-col items-center text-center h-full">
+                  <h3 className="font-black text-2xl mb-2 text-white">{name}</h3>
+                  <p className="text-sm font-semibold text-gray-400 mb-8 uppercase tracking-widest">{desc}</p>
+
+                  <div className="mb-10 w-full pb-8 border-b border-white/10">
+                    {price === 0 ? <span className="text-6xl font-black text-white">Free</span> : (
+                      <div className="flex items-center justify-center gap-1">
+                        <span className="text-xl font-bold text-gray-400">₹</span>
+                        <span className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">{(annual ? annualPrice : price).toLocaleString()}</span>
+                        <span className="text-sm font-bold text-gray-500 self-end mb-2">/mo</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <ul className="space-y-4 mb-10 w-full text-left flex-1">
+                    {feats.map((f, idx) => (
+                      <li key={idx} className="flex items-start gap-3">
+                        <div className={`mt-0.5 shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${highlight ? 'bg-blue-500/20 text-blue-400' : 'bg-white/5 text-gray-500'}`}><Check size={12} strokeWidth={3} /></div>
+                        <span className="text-sm font-semibold text-gray-300 leading-snug">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button onClick={() => handleUpgradeClick(name, annual ? annualPrice : price)} className={`w-full py-4 rounded-xl text-sm font-black uppercase tracking-widest transition-all ${highlight ? 'bg-white text-blue-900 hover:bg-gray-100 shadow-xl' : 'bg-white/5 text-white hover:bg-white/10 border border-white/10'}`}>
+                    {cta}
+                  </button>
                 </div>
-                <ul className="space-y-2 flex-1 mb-5">
-                  {feats.map(f => (
-                    <li key={f} className="flex items-center gap-2 text-sm" style={{ color: 'var(--text-secondary)' }}>
-                      <div className="w-4 h-4 rounded-full flex items-center justify-center shrink-0" style={{ background: 'rgba(59,130,246,0.15)' }}><Check size={9} style={{ color: 'var(--primary)' }} /></div>{f}
-                    </li>
-                  ))}
-                </ul>
-                <a href="#get-started" className={`${highlight ? 'btn-primary' : 'btn-ghost'} justify-center`}>{cta}</a>
               </div>
             ))}
           </div>
@@ -369,44 +538,53 @@ export default function LandingPage() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="py-24" style={{ background: 'var(--bg-base)' }}>
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
-            <div className="badge badge-gray mx-auto mb-4 w-fit">FAQ</div>
-            <h2 className="text-4xl font-black" style={{ color: 'var(--text-primary)' }}>Got <span className="gradient-text">questions?</span></h2>
+      <section id="faq" className="py-32 bg-[var(--bg-base)] border-t border-white/5">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <span className="text-gray-500 font-bold tracking-widest uppercase text-sm mb-3 block">Clarity</span>
+            <h2 className="text-4xl sm:text-5xl font-black text-white">Operational <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-300 to-gray-600">Details.</span></h2>
           </div>
-          <div className="space-y-3">{faqs.map(({ q, a }) => <FAQItem key={q} q={q} a={a} />)}</div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-24 relative overflow-hidden" style={{ background: 'var(--bg-surface)', borderTop: '1px solid var(--border)' }}>
-        <div className="orb" style={{ width: 400, height: 400, top: '50%', left: '50%', transform: 'translate(-50%,-50%)', background: 'radial-gradient(circle,rgba(59,130,246,0.15) 0%,transparent 70%)' }} />
-        <div className="relative max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-5xl font-black mb-4" style={{ color: 'var(--text-primary)' }}>Ready to land your<br /><span className="shimmer-text">dream job?</span></h2>
-          <p className="text-base mb-8" style={{ color: 'var(--text-secondary)' }}>Join 10,000+ job seekers. Free to start, no credit card needed.</p>
-          <a href="#get-started" className="btn-primary text-base px-8 py-3.5 inline-flex">Get Started Free <ArrowRight size={17} /></a>
+          <div className="space-y-4">
+            {faqs.map(({ q, a }, index) => <FAQItem key={index} q={q} a={a} />)}
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer style={{ background: 'var(--bg-base)', borderTop: '1px solid var(--border)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="flex items-center gap-2 mb-3"><div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#3b82f6,#2563eb)' }}><Briefcase size={13} className="text-white" /></div><span className="font-black" style={{ color: 'var(--text-primary)' }}>JobFlow</span></div>
-              <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>AI-powered job search automation for modern professionals.</p>
+      <footer className="border-t border-white/5 bg-[#050a14] pt-20 pb-10">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 mb-16">
+            <div className="col-span-2 lg:col-span-2">
+              <div className="flex items-center gap-3 mb-6">
+                <img src="/logo.png" alt="JobFlow Logo" className="w-8 h-8 rounded-lg shadow-[0_4px_12px_rgba(59,130,246,0.4)] object-cover" />
+                <span className="font-black text-xl tracking-tighter text-white">JobFlow</span>
+              </div>
+              <p className="text-sm font-medium leading-relaxed text-gray-500 max-w-sm mb-6">
+                The ultimate 'Done-For-You' job search engine for the Indian market. Sync. Analyze. Connect. Automate.
+              </p>
+              <div className="flex gap-4">
+                {[Linkedin, Search, Briefcase].map((Ic, i) => (
+                  <div key={i} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:bg-white/5 hover:text-white transition-colors cursor-pointer"><Ic size={16} /></div>
+                ))}
+              </div>
             </div>
-            {[{ title: 'Product', links: ['Features', 'Pricing', 'Changelog', 'Roadmap'] }, { title: 'Company', links: ['About', 'Blog', 'Careers', 'Contact'] }, { title: 'Legal', links: ['Privacy', 'Terms', 'Security'] }].map(({ title, links }) => (
-              <div key={title}><p className="font-bold text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>{title}</p><ul className="space-y-2">{links.map(l => <li key={l}><a href="#" className="text-xs" style={{ color: 'var(--text-muted)' }}>{l}</a></li>)}</ul></div>
+            {[{ title: 'Product', links: ['Live Sync Engine', 'Market Integration', 'Company Intel', 'AI Matching', 'Outreach Bots'] },
+            { title: 'Company', links: ['About the Founders', 'Methodology', 'Manifesto', 'Contact Team'] },
+            { title: 'Legal', links: ['Privacy Policy', 'Terms of Service', 'Data Encryption Standards'] }].map(({ title, links }) => (
+              <div key={title} className="col-span-1">
+                <p className="font-bold text-sm mb-6 text-white uppercase tracking-widest">{title}</p>
+                <ul className="space-y-4">
+                  {links.map(l => <li key={l}><a href="#" className="text-sm font-semibold text-gray-500 hover:text-blue-400 transition-colors">{l}</a></li>)}
+                </ul>
+              </div>
             ))}
           </div>
-          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3" style={{ borderTop: '1px solid var(--border)' }}>
-            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>© 2025 JobFlow. Built with ❤️ for job seekers.</p>
-            <p className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>v2.0.0</p>
+          <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-xs font-bold text-gray-600 tracking-wider text-center sm:text-left">© 2025 JOBFLOW AUTOMATION. DEVELOPED BY THE FOUNDING TEAM.</p>
+            <p className="text-xs font-black font-mono tracking-widest text-blue-500 bg-blue-500/10 px-3 py-1 rounded-md border border-blue-500/20">SYSTEM CORE: ACTIVE</p>
           </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 }

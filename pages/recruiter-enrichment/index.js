@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { Users, Mail, Linkedin, Phone, Download, RefreshCw, CheckCircle2, Send, Filter, ShieldCheck, Loader2, Lock, Unlock, Search } from 'lucide-react';
+import { Users, Mail, Linkedin, Phone, Download, RefreshCw, CheckCircle2, Send, Filter, ShieldCheck, Loader2, Lock, Unlock, Search, Zap } from 'lucide-react';
 import Layout from '@/components/Layout';
 import { useApp } from '@/context/AppContext';
 
@@ -62,16 +62,17 @@ export default function RecruiterEnrichment() {
         // For the demo, we'll just pretend to find the ones already in the list + maybe duplicates if we had a large pool
         // But since `recruiters` in context is small, we'll just simulate the action.
 
-        // Let's actually create some new mock recruiters based on the selected jobs!
         const newRecs = selectedJobs.map(jobId => {
             const job = savedJobs.find(j => j.id === jobId);
+            const comp = job?.company || 'Company';
+            const safeCompStr = comp.toLowerCase().replace(/[^a-z0-9]/g, '');
             return {
                 id: Date.now() + Math.random(),
                 name: 'Anjali Gupta', // Generic for demo
                 title: 'Talent Acquisition',
-                company: job?.company || 'Company',
-                email: `anjali@${job?.company.toLowerCase().replace(/\s/g, '')}.com`,
-                linkedin: `linkedin.com/in/anjali-${job?.company}`,
+                company: comp,
+                email: `anjali@${safeCompStr}.com`,
+                linkedin: `linkedin.com/in/anjali-${safeCompStr}`,
                 phone: '+91-98765-XXXXX',
                 avatar: 'AG',
                 status: 'Not Contacted',
@@ -109,7 +110,13 @@ export default function RecruiterEnrichment() {
     return (
         <Layout>
             <Head><title>Recruiter Enrichment — JobFlow</title></Head>
-            <div className="space-y-6 animate-fade-in max-w-7xl mx-auto">
+
+            {/* Floating Decorative Brain Image */}
+            <div className="absolute top-[10%] left-[-5%] w-[350px] xl:w-[450px] opacity-[0.06] xl:opacity-[0.1] mix-blend-screen animate-float pointer-events-none z-0" style={{ animationDuration: '16s' }}>
+                <img src="/brain.png" alt="AI Enrichment Core" className="w-full h-full object-contain filter drop-shadow-[0_0_50px_rgba(59,130,246,0.4)]" />
+            </div>
+
+            <div className="space-y-6 animate-fade-in relative z-10 max-w-7xl mx-auto">
                 <div className="flex items-center justify-between flex-wrap gap-4">
                     <div>
                         <h1 className="text-2xl font-black" style={{ color: 'var(--text-primary)' }}>Recruiter Enrichment</h1>

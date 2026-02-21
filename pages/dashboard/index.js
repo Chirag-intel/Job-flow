@@ -68,7 +68,12 @@ export default function Dashboard() {
         <Layout>
             <Head><title>Dashboard — JobFlow</title></Head>
 
-            <div className="space-y-6 animate-fade-in">
+            {/* Floating Decorative Brain Image */}
+            <div className="absolute top-[-5%] right-[-5%] w-[400px] xl:w-[600px] opacity-10 xl:opacity-15 mix-blend-screen animate-float pointer-events-none z-0" style={{ animationDuration: '12s' }}>
+                <img src="/brain.png" alt="AI Brain Decor" className="w-full h-full object-contain filter drop-shadow-[0_0_60px_rgba(59,130,246,0.5)]" />
+            </div>
+
+            <div className="space-y-6 animate-fade-in relative z-10">
                 {/* Header */}
                 <div className="flex items-center justify-between flex-wrap gap-3">
                     <div>

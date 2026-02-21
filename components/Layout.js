@@ -10,7 +10,7 @@ import { useApp } from '@/context/AppContext';
 
 const navItems = [
     { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { href: '/job-scraper', icon: Search, label: 'Job Scraper' },
+    { href: '/job-scraper', icon: Search, label: 'Live Job Sync' },
     { href: '/recruiter-enrichment', icon: Users, label: 'Recruiter Enrichment' },
     { href: '/outreach-creator', icon: MessageSquare, label: 'Outreach Creator' },
     { href: '/tracking', icon: BarChart2, label: 'Tracking & Analytics' },
@@ -99,9 +99,7 @@ export default function Layout({ children }) {
             >
                 {/* Logo */}
                 <div className="flex items-center gap-2.5 px-5 py-5" style={{ borderBottom: '1px solid var(--border)' }}>
-                    <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#3b82f6,#2563eb)', boxShadow: '0 4px 12px rgba(59,130,246,0.4)' }}>
-                        <Briefcase size={16} className="text-white" />
-                    </div>
+                    <img src="/logo.png" alt="JobFlow Logo" className="w-8 h-8 rounded-lg shadow-[0_4px_12px_rgba(59,130,246,0.4)] object-cover" />
                     <span className="font-black text-lg tracking-tight" style={{ color: 'var(--text-primary)' }}>
                         Job<span className="gradient-text">Flow</span>
                     </span>
@@ -160,7 +158,7 @@ export default function Layout({ children }) {
             {/* Main */}
             <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
                 {/* Topbar */}
-                <header className="flex items-center gap-3 px-4 lg:px-6 py-3.5 shrink-0" style={{ background: 'rgba(7,13,26,0.8)', backdropFilter: 'blur(20px)', borderBottom: '1px solid var(--border)' }}>
+                <header className="flex items-center gap-3 px-4 lg:px-6 py-3.5 shrink-0 relative z-[100]" style={{ background: 'rgba(7,13,26,0.8)', backdropFilter: 'blur(20px)', borderBottom: '1px solid var(--border)' }}>
                     <button
                         className="lg:hidden p-2 rounded-lg"
                         style={{ color: 'var(--text-muted)', background: 'var(--glass)' }}

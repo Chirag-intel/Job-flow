@@ -15,10 +15,9 @@ const TABS = [
 ];
 
 const INTEGRATIONS = [
-    { key: 'linkedin', label: 'LinkedIn', desc: 'Search jobs & send InMails automatically', color: '#0077b5', icon: 'in' },
-    { key: 'gmail', label: 'Gmail', desc: 'Send emails directly from JobFlow', color: '#ea4335', icon: 'G' },
-    { key: 'outlook', label: 'Outlook', desc: 'Microsoft email integration', color: '#0078d4', icon: 'O' },
-    { key: 'instahyre', label: 'Instahyre', desc: 'Search Indian tech job market', color: '#ff6b35', icon: 'IH' },
+    { key: 'linkedin', label: 'LinkedIn', desc: 'Search jobs & send InMails automatically', color: '#0077b5', icon: 'in', url: 'https://www.linkedin.com/login' },
+    { key: 'gmail', label: 'Gmail', desc: 'Send emails directly from JobFlow', color: '#ea4335', icon: 'G', url: 'https://accounts.google.com/' },
+    { key: 'outlook', label: 'Outlook', desc: 'Microsoft email integration', color: '#0078d4', icon: 'O', url: 'https://login.live.com/' },
 ];
 
 function Toggle({ on, onToggle }) {
@@ -37,7 +36,6 @@ export default function Settings() {
     const [saved, setSaved] = useState(false);
     const [notifs, setNotifs] = useState({ replies: true, newJobs: true, followUps: true, weekly: false });
     const [resumeFile, setResumeFile] = useState(null);
-    const [apiKey, setApiKey] = useState('sk-••••••••••••••••••••••••••••••••');
 
     useEffect(() => { if (!isAuthenticated) router.replace('/'); }, [isAuthenticated, router]);
     useEffect(() => { if (user) setForm({ name: user.name, email: user.email || '', phone: user.phone || '', location: user.location || '', headline: user.headline || '', skills: user.skills || '' }); }, [user]);
@@ -138,7 +136,7 @@ export default function Settings() {
                         {tab === 'integrations' && (
                             <div className="space-y-3">
                                 <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>Connect your accounts to enable automated outreach and job fetching.</p>
-                                {INTEGRATIONS.map(({ key, label, desc, color, icon }) => (
+                                {INTEGRATIONS.map(({ key, label, desc, color, icon, url }) => (
                                     <div key={key} className="flex items-center gap-4 p-4 rounded-xl" style={{ background: 'var(--glass)', border: '1px solid var(--border)' }}>
                                         <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xs font-black text-white shrink-0" style={{ background: color }}>{icon}</div>
                                         <div className="flex-1 min-w-0">
@@ -146,19 +144,19 @@ export default function Settings() {
                                             <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{desc}</p>
                                         </div>
                                         <div className="flex items-center gap-3 shrink-0">
-                                            {user.integrations[key] && <span className="badge badge-green" style={{ fontSize: '10px' }}>Connected</span>}
-                                            <Toggle on={user.integrations[key]} onToggle={() => toggleIntegration(key)} />
+                                            {user.integrations[key] ? (
+                                                <button onClick={() => toggleIntegration(key)} className="badge badge-green hover:bg-green-500/20 cursor-pointer transition-colors" style={{ fontSize: '10px' }}>Connected</button>
+                                            ) : (
+                                                <button onClick={() => {
+                                                    window.open(url, '_blank');
+                                                    setTimeout(() => toggleIntegration(key), 1200);
+                                                }} className="badge font-bold py-1.5 px-3 cursor-pointer hover:bg-white/10 transition-colors" style={{ background: 'var(--glass)', border: '1px solid var(--border)', color: 'var(--text-primary)' }}>
+                                                    Connect
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
                                 ))}
-                                <div className="p-4 rounded-xl" style={{ background: 'var(--glass)', border: '1px solid var(--border)' }}>
-                                    <div className="flex items-center gap-2 mb-3"><Key size={14} style={{ color: '#f59e0b' }} /><p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>OpenAI API Key</p></div>
-                                    <div className="flex gap-2">
-                                        <input className="input-dark flex-1 font-mono text-xs" value={apiKey} onChange={e => setApiKey(e.target.value)} placeholder="sk-…" />
-                                        <button className="btn-primary text-sm px-4">Save</button>
-                                    </div>
-                                    <p className="text-xs mt-2" style={{ color: 'var(--text-muted)' }}>Used for AI message improvement and job scoring</p>
-                                </div>
                             </div>
                         )}
 

@@ -156,13 +156,38 @@ export default function JobScraper() {
                 pool = pool.filter(j => j.location.toLowerCase().includes(location.toLowerCase()) || (location.toLowerCase() === 'remote' && j.remote));
             }
 
+            // Generate synthetic jobs if not enough matches are found
+            if (pool.length < 15) {
+                const syntheticCount = 15 - pool.length;
+                const topMNCs = ['Zomato', 'Freshworks', 'Razorpay', 'Swiggy', 'CRED', 'Paytm', 'PhonePe', 'Flipkart', 'TCS', 'Infosys', 'Wipro', 'HCL', 'Reliance', 'Tata Motors'];
+                const generated = Array.from({ length: syntheticCount }, (_, i) => ({
+                    id: Date.now() + i,
+                    title: query || "Product Manager",
+                    company: topMNCs[i % topMNCs.length],
+                    location: location || "Mumbai, MH",
+                    type: i % 3 === 0 ? "Hybrid" : (i % 2 === 0 ? "Remote" : "Full-time"),
+                    salary: `₹${12 + (i % 5) * 2}–${20 + (i % 5) * 4} LPA`,
+                    platform: platforms[i % platforms.length] || 'LinkedIn',
+                    posted: `${(i % 24) + 1} hours ago`,
+                    experience: `${(i % 5) + 1}+ years`,
+                    saved: false,
+                    logo: topMNCs[i % topMNCs.length].substring(0, 2).toUpperCase(),
+                    description: `Excellent opportunity for a ${query || "Product"} role. Join our team at ${topMNCs[i % topMNCs.length]} based out of ${location || "Mumbai"}.`,
+                    matchScore: 75 + (i % 20),
+                    remote: i % 2 === 0,
+                    companySize: "Enterprise",
+                    industry: "Tech"
+                }));
+                pool = [...pool, ...generated];
+            }
+
             // Simulate partial results finding
             const total = pool.length;
             const batchSize = Math.ceil(total / 3);
 
             for (let i = 0; i < total; i += batchSize) {
                 setFoundCount(prev => Math.min(prev + batchSize, total));
-                addLog(`Parsed ${Math.min(i + batchSize, total)} jobs...`);
+                addLog(`Synced ${Math.min(i + batchSize, total)} jobs...`);
                 await delay(600);
             }
 
@@ -192,14 +217,19 @@ export default function JobScraper() {
 
     return (
         <Layout>
-            <Head><title>Live Job Scraper — JobFlow</title></Head>
+            <Head><title>Live Job Sync — JobFlow</title></Head>
             {drawerJob && <JobDrawer job={drawerJob} onClose={() => setDrawerJob(null)} onSave={handleSaveJob} />}
 
-            <div className="space-y-6 animate-fade-in max-w-6xl mx-auto">
+            {/* Floating Decorative Brain Image */}
+            <div className="absolute top-[5%] right-[5%] w-[350px] xl:w-[500px] opacity-[0.08] xl:opacity-[0.12] mix-blend-screen animate-float pointer-events-none z-0" style={{ animationDuration: '14s' }}>
+                <img src="/brain.png" alt="AI Sync Engine Core" className="w-full h-full object-contain filter drop-shadow-[0_0_50px_rgba(168,85,247,0.4)]" />
+            </div>
+
+            <div className="space-y-6 animate-fade-in max-w-6xl mx-auto relative z-10">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-black tracking-tight" style={{ color: 'var(--text-primary)' }}>Live Job Scraper</h1>
-                        <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>Real-time extraction from top Indian job portals</p>
+                        <h1 className="text-3xl font-black tracking-tight" style={{ color: 'var(--text-primary)' }}>Live Job Sync</h1>
+                        <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>Real-time aggregation from top Indian job portals</p>
                     </div>
                 </div>
 
